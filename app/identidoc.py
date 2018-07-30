@@ -13,8 +13,9 @@ def mainpage():
     name = default_name
     if request.method == 'POST':
         name = request.form['name']
-        salted_name = salt + name
-        name_hash = hashlib.sha256(salted_name.encode()).hexdigest()
+
+    salted_name = salt + name
+    name_hash = hashlib.sha256(salted_name.encode()).hexdigest()
 
     header = '<html><head><title>Identidock</title></head></html><body>'
     body = '''<form method="POST">
@@ -29,10 +30,10 @@ def mainpage():
     return header + body + footer
 
 @app.route('/monster/<name>')
-def get_identicon( name ):
+def get_identicon(name):
     r = requests.get('http://dnmonster:8000/monster/' + name + '?size=80')
     image = r.content
-    return Response( image, mimetype='image/png')
+    return Response(image, mimetype='image/png')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
